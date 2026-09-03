@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
-
-class User {
-  final String nome;
-  final String email;
-
-  User({required this.nome, required this.email});
-}
+import 'package:more_devs_do_zero/features/login/model/user.dart';
+import 'package:more_devs_do_zero/shared/exceptions/auth_exception.dart';
 
 class LoginController extends ChangeNotifier {
   final RegExp _emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
@@ -29,24 +24,33 @@ class LoginController extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> handleLogin() async {
-    if (key.currentState!.validate()) {
-      isLoading = true;
-      notifyListeners();
+  void changeIsLoading(bool value) {
+    isLoading = value;
+    notifyListeners();
+  }
 
+  Future<void> handleLogin() async {
+    if (!key.currentState!.validate()) {
+      throw ErrorDescription('validacao_incorreta');
+    }
+
+    changeIsLoading(true);
+    try {
       await login();
-      isLoading = false;
-      notifyListeners();
       emailController.clear();
       senhaController.clear();
-      return;
+    } finally {
+      changeIsLoading(false);
     }
-    throw ErrorDescription('validacao_incorreta');
   }
 
   Future<void> login() async {
     //Simula chamada da API
     await Future.delayed(const Duration(seconds: 2));
+    if (emailController.text.trim() != 'vitor6890@gmail.com' ||
+        senhaController.text.trim() != '123456') {
+      throw AuthException('E-mail ou senha incorretos');
+    }
     user = User(nome: 'Vitor', email: emailController.text);
   }
 
