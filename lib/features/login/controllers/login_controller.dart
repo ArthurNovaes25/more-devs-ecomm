@@ -47,11 +47,11 @@ class LoginController extends ChangeNotifier {
   Future<void> login() async {
     //Simula chamada da API
     await Future.delayed(const Duration(seconds: 2));
-    if (emailController.text.trim() != 'vitor6890@gmail.com' ||
+    if (emailController.text.trim() != 'arthur@gmail.com' ||
         senhaController.text.trim() != '123456') {
       throw AuthException('E-mail ou senha incorretos');
     }
-    user = User(nome: 'Vitor', email: emailController.text);
+    user = User(nome: 'Arthur', email: emailController.text);
   }
 
   String? validateEmail(String? value) {

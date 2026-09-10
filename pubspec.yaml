@@ -38,6 +38,8 @@ dependencies:
   animated_snack_bar: ^0.4.0
   provider: ^6.1.5+1
   skeletonizer: ^2.1.3
+  multi_dropdown: ^3.2.2
+ 
 
 flutter_native_splash:
   color: "#FFFFFF"

@@ -9,6 +9,7 @@ class AppTextField extends StatefulWidget {
     this.onChanged,
     this.validator,
     this.controller,
+    this.prefixIcon,
   });
 
   final String hintText;
@@ -16,7 +17,7 @@ class AppTextField extends StatefulWidget {
   final Function(String)? onChanged;
   final String? Function(String?)? validator;
   final TextEditingController? controller;
-
+  final Widget? prefixIcon;
   @override
   State<AppTextField> createState() => _AppTextFieldState();
 }
