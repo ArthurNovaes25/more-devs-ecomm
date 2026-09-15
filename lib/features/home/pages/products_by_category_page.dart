@@ -35,8 +35,6 @@ class ProductsByCategoryContent extends StatefulWidget {
 }
 
 class _ProductsByCategoryContentState extends State<ProductsByCategoryContent> {
-  String? _country;
-
   static final List<Product> _fakeProducts = List.filled(
     6,
     Product(
@@ -76,34 +74,45 @@ class _ProductsByCategoryContentState extends State<ProductsByCategoryContent> {
         builder: (context, controller, child) {
           return Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: AppTextField(
-                  hintText: 'Buscar produtos',
-                  prefixIcon: const Icon(Icons.search),
-                  onChanged: context
-                      .read<ProductsByCategoryController>()
-                      .search,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: MultiDropdown<String>(
-                  items: [
-                    ...controller.brands.map(
-                      (e) => DropdownItem(label: e, value: e),
+              Skeletonizer(
+                enabled:
+                    controller.state == ProductsByCategoryViewState.loading,
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: AppTextField(
+                        hintText: 'Buscar produtos',
+                        prefixIcon: const Icon(Icons.search),
+                        onChanged: context
+                            .read<ProductsByCategoryController>()
+                            .searchQuery,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: MultiDropdown<String>(
+                        items: [
+                          ...controller.brands.map(
+                            (e) => DropdownItem(label: e, value: e),
+                          ),
+                        ],
+                        singleSelect: true,
+                        fieldDecoration: FieldDecoration(
+                          hintText: 'Selecionar marca',
+                          suffixIcon: const Icon(
+                            Icons.keyboard_arrow_down_rounded,
+                          ),
+                        ),
+                        onSelectionChange: (values) {
+                          controller.searchBrand(values.first);
+                        },
+                      ),
                     ),
                   ],
-                  singleSelect: true,
-                  fieldDecoration: FieldDecoration(
-                    hintText: 'Selecionar marca',
-                    suffixIcon: const Icon(Icons.keyboard_arrow_down_rounded),
-                  ),
-                  onSelectionChange: (values) {
-                    controller.selectedBrand = values.first;
-                  },
                 ),
               ),
+
               Expanded(
                 child: Consumer<ProductsByCategoryController>(
                   builder: (context, controller, child) {

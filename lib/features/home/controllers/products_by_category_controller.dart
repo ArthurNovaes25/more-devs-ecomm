@@ -7,7 +7,8 @@ enum ProductsByCategoryViewState { loading, success, error }
 class ProductsByCategoryController extends ChangeNotifier {
   List<Product> _categoryProducts = [];
   List<String> brands = [];
-  String selectedBrand = '';
+
+  String _selectedBrand = '';
 
   String _query = '';
 
@@ -15,10 +16,20 @@ class ProductsByCategoryController extends ChangeNotifier {
 
   List<Product> get products {
     if (_query.isEmpty) return _categoryProducts;
+
     final query = _query.toLowerCase();
+
     return _categoryProducts.where((product) {
-      return product.name.toLowerCase().contains(query) ||
-          product.brand.toLowerCase().contains(query);
+      if (_selectedBrand.isNotEmpty && query.isNotEmpty) {
+        return product.name.toLowerCase().contains(query) &&
+            product.brand == _selectedBrand;
+      } else if (_selectedBrand.isNotEmpty) {
+        // filtra apenas por marca
+        return product.brand == _selectedBrand;
+      } else {
+        return product.name.toLowerCase().contains(query);
+        //filtra pelo que foi digitado
+      }
     }).toList();
   }
 
@@ -27,8 +38,14 @@ class ProductsByCategoryController extends ChangeNotifier {
     notifyListeners();
   }
 
-  void search(String query) {
+  void searchQuery(String query) {
     _query = query;
+
+    notifyListeners();
+  }
+
+  void searchBrand(String selectedBrand) {
+    _selectedBrand = selectedBrand;
     notifyListeners();
   }
 
@@ -42,6 +59,11 @@ class ProductsByCategoryController extends ChangeNotifier {
           .where((product) => product.category == category)
           .toList();
       //TODO popular brands com todas as marcas, sem repetir.
+
+      brands = _categoryProducts
+          .map((product) => product.brand)
+          .toSet()
+          .toList();
 
       changeState(ProductsByCategoryViewState.success);
     } catch (e) {
