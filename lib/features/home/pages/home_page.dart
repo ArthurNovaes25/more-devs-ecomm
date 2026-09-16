@@ -6,6 +6,7 @@ import 'package:more_devs_do_zero/features/login/controllers/login_controller.da
 import 'package:more_devs_do_zero/shared/app_text_style.dart';
 import 'package:more_devs_do_zero/shared/widgets/app_elevated_button.dart';
 import 'package:provider/provider.dart';
+import 'package:more_devs_do_zero/shared/app_bottom_sheet.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -51,6 +52,7 @@ class _HomePageState extends State<HomePage> {
                 state: homeController.productsState,
                 products: homeController.products,
               ),
+              SizedBox(height: 10),
               AppElevatedButton(
                 label: 'Testar',
                 type: ButtonType.filled,
@@ -58,6 +60,14 @@ class _HomePageState extends State<HomePage> {
                   homeController
                     ..getCategories()
                     ..getProducts();
+                },
+              ),
+              SizedBox(height: 10),
+              AppElevatedButton(
+                label: 'Testasso',
+                type: ButtonType.filled,
+                onPressed: () {
+                  showAppBottomSheet(context);
                 },
               ),
             ],

@@ -23,6 +23,7 @@ class ProductsSection extends StatelessWidget {
       imageUrl: '',
       price: 0,
       category: '',
+      description: '',
     ),
   );
 

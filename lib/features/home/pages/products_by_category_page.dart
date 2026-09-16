@@ -105,7 +105,10 @@ class _ProductsByCategoryContentState extends State<ProductsByCategoryContent> {
                           ),
                         ),
                         onSelectionChange: (values) {
-                          controller.searchBrand(values.first);
+                          final selectedBrand = values.isEmpty
+                              ? ''
+                              : values.first;
+                          controller.searchBrand(selectedBrand);
                         },
                       ),
                     ),

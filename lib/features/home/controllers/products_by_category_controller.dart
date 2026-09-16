@@ -15,15 +15,14 @@ class ProductsByCategoryController extends ChangeNotifier {
   ProductsByCategoryViewState state = ProductsByCategoryViewState.loading;
 
   List<Product> get products {
-    if (_query.isEmpty) return _categoryProducts;
-
     final query = _query.toLowerCase();
+    final selectedBrand = _selectedBrand;
 
     return _categoryProducts.where((product) {
-      if (_selectedBrand.isNotEmpty && query.isNotEmpty) {
+      if (selectedBrand.isNotEmpty && query.isNotEmpty) {
         return product.name.toLowerCase().contains(query) &&
             product.brand == _selectedBrand;
-      } else if (_selectedBrand.isNotEmpty) {
+      } else if (selectedBrand.isNotEmpty) {
         // filtra apenas por marca
         return product.brand == _selectedBrand;
       } else {
